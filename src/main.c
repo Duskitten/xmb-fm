@@ -40,6 +40,7 @@ OptionList op_list;
 VerticalList vr_list;
 HorizontalList hr_list;
 
+
 Dialog delete_dialog = {
     .content = "Are you sure you want to permanently delete this?",
 };
@@ -131,6 +132,7 @@ bool handle_hr_list_key(int key) {
 
 bool handle_option_list_key(OptionList *list, int key) {
     if (list->depth > 0) {
+
         switch (key) {
         case GLFW_KEY_E:
         case GLFW_KEY_ESCAPE:
@@ -172,6 +174,7 @@ bool handle_option_list_key(OptionList *list, int key) {
 }
 
 bool handle_vr_list_key(int key) {
+
     int selected = vr_list.selected;
 
     switch (key) {
@@ -491,6 +494,115 @@ void file_manager_event_handler(EventType type, void *context, void *data) {
     }
 }
 
+void key_return(int key){
+    if (delete_dialog.is_visible) {
+        handle_dialog_entry_key(&delete_dialog, key);
+        return;
+    }
+
+    if (handle_input_entry_key(key))
+        return;
+
+    if (search_input.is_visible || rename_input.is_visible || create_dir_input.is_visible) {
+        return;
+    }
+
+    if (handle_option_list_key(&op_list, key))
+        return;
+
+    if (handle_file_entry_key(key))
+        return;
+
+    // Main view mode
+    if (handle_global_key(key))
+        return;
+    if (handle_hr_list_key(key))
+        return;
+    if (handle_vr_list_key(key))
+        return;
+}
+
+
+int key_pressed[16];
+
+void button_check (int controlInput, int offset){
+    GLFWgamepadstate state;
+    if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
+    { 
+        if (state.buttons[controlInput]){
+            if(key_pressed[offset] == 0 && key_pressed[offset+1] == 0){
+                key_pressed[offset] = 1;
+            }
+            else if (key_pressed[offset] == 1 && key_pressed[offset+1] == 0){
+                key_pressed[offset] = 0;
+                key_pressed[offset+1] = 1;
+            }
+        }
+        else{
+            key_pressed[offset] = 0;
+            key_pressed[offset+1] = 0;
+        }
+    }
+}
+
+void handle_controller_input(){
+    GLFWgamepadstate state;
+    if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
+    {   
+        button_check(GLFW_GAMEPAD_BUTTON_DPAD_DOWN, 0);
+        button_check(GLFW_GAMEPAD_BUTTON_DPAD_UP, 2);
+        button_check(GLFW_GAMEPAD_BUTTON_DPAD_LEFT, 4);
+        button_check(GLFW_GAMEPAD_BUTTON_DPAD_RIGHT, 6);
+
+        button_check(GLFW_GAMEPAD_BUTTON_CROSS, 8);
+        button_check(GLFW_GAMEPAD_BUTTON_SQUARE, 10);
+        button_check(GLFW_GAMEPAD_BUTTON_TRIANGLE, 12);
+        button_check(GLFW_GAMEPAD_BUTTON_CIRCLE, 14);
+        
+        if (key_pressed[0] == 1)
+        {
+            key_return(GLFW_KEY_S);
+        }
+
+        if (key_pressed[2] == 1)
+        {
+            key_return(GLFW_KEY_W);
+        }
+
+        if (key_pressed[4] == 1)
+        {
+            key_return(GLFW_KEY_A);
+        }
+
+        if (key_pressed[6] == 1)
+        {
+            key_return(GLFW_KEY_D);
+        }
+
+        if (key_pressed[8] == 1)
+        {
+            key_return(GLFW_KEY_ENTER);
+        }
+
+        if (key_pressed[10] == 1)
+        {
+            key_return(GLFW_KEY_E);
+        }
+
+        if (key_pressed[12] == 1)
+        {
+            key_return(GLFW_KEY_P);
+        }
+
+        if (key_pressed[14] == 1)
+        {
+            key_return(GLFW_KEY_Q);
+        }
+
+        
+    }
+}
+
 int main(int argc, char *argv[]) {
     // Initialize GLFW
     
@@ -578,7 +690,7 @@ int main(int argc, char *argv[]) {
 
     while (!glfwWindowShouldClose(window)) {
         float current_time = glfwGetTime();
-
+        handle_controller_input();
         animation_update(current_time);
 
         int width, height;
