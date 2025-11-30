@@ -494,8 +494,13 @@ void file_manager_event_handler(EventType type, void *context, void *data) {
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     // Initialize GLFW
+    
+    if (sizeof(argc) > 1) {
+        state.theme  = atoi(argv[1]);
+    } 
+
     if (!glfwInit()) {
         fprintf(stderr, "Failed to initialize GLFW\n");
         return 1;
@@ -545,7 +550,7 @@ int main() {
         return 1;
     }
 
-    state.theme = 2; // electric_blue
+    //state.theme = 2; // electric_blue
     srand(time(NULL));
     initialize_menu_data();
 
