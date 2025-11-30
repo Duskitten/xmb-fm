@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-HrItem horizontalItems[10];
+HrItem horizontalItems[9];
 
 void init_horizontal_list(HorizontalList *hr_list) {
     const char *homedir;
@@ -14,49 +14,46 @@ void init_horizontal_list(HorizontalList *hr_list) {
         homedir = getpwuid(getuid())->pw_dir;
     }
 
-    // Users category
-    strcpy(horizontalItems[0].title, "Home");
-    strcpy(horizontalItems[0].path, homedir);
-    strcpy(horizontalItems[0].icon, "\ue977");
+    // Friends category
+    strcpy(horizontalItems[0].title, "File System");
+    strcpy(horizontalItems[0].path, "/");
+    strcpy(horizontalItems[0].icon, "\ue958");
 
-    // Settings category
-    strcpy(horizontalItems[1].title, "Desktop");
-    sprintf(horizontalItems[1].path, "%s/%s", homedir, "Desktop");
-    strcpy(horizontalItems[1].icon, "\ue9b7");
+    // Users category
+    strcpy(horizontalItems[1].title, "Home");
+    strcpy(horizontalItems[1].path, homedir);
+    strcpy(horizontalItems[1].icon, "\ue977");
 
     // Add more categories like in the Vue code
     strcpy(horizontalItems[2].title, "Documents");
     sprintf(horizontalItems[2].path, "%s/%s", homedir, "Documents");
     strcpy(horizontalItems[2].icon, "\ue909");
 
-    // Songs category
-    strcpy(horizontalItems[3].title, "Downloads");
-    sprintf(horizontalItems[3].path, "%s/%s", homedir, "Downloads");
-    strcpy(horizontalItems[3].icon, "\ue95f");
-
     // Movies category
-    strcpy(horizontalItems[4].title, "Pictures");
-    sprintf(horizontalItems[4].path, "%s/%s", homedir, "Pictures");
+    strcpy(horizontalItems[3].title, "Pictures");
+    sprintf(horizontalItems[3].path, "%s/%s", homedir, "Pictures");
+    strcpy(horizontalItems[3].icon, "\ue973");
+
+     // Movies category
+    strcpy(horizontalItems[4].title, "Music");
+    sprintf(horizontalItems[4].path, "%s/%s", homedir, "Music");
     strcpy(horizontalItems[4].icon, "\ue978");
 
-    // Games category
-    strcpy(horizontalItems[5].title, "Public");
-    sprintf(horizontalItems[5].path, "%s/%s", homedir, "Public");
-    strcpy(horizontalItems[5].icon, "\ueA07");
-
     // Network category
-    strcpy(horizontalItems[6].title, "Videos");
-    sprintf(horizontalItems[6].path, "%s/%s", homedir, "Videos");
-    strcpy(horizontalItems[6].icon, "\ue94d");
+    strcpy(horizontalItems[5].title, "Videos");
+    sprintf(horizontalItems[5].path, "%s/%s", homedir, "Videos");
+    strcpy(horizontalItems[5].icon, "\ue94d");
 
-    // Friends category
-    strcpy(horizontalItems[7].title, "File System");
-    strcpy(horizontalItems[7].path, "/");
-    strcpy(horizontalItems[7].icon, "\ue958");
+    // Songs category
+    strcpy(horizontalItems[6].title, "Downloads");
+    sprintf(horizontalItems[6].path, "%s/%s", homedir, "Downloads");
+    strcpy(horizontalItems[6].icon, "\ue95f");
+
+
 
     // Initialize animation state
     hr_list->items = horizontalItems;
-    hr_list->items_count = 8;
+    hr_list->items_count = 7;
 }
 
 void horizontal_list_event_handler(EventType type, void *context, void *data) {

@@ -107,9 +107,9 @@ bool handle_hr_list_key(int key) {
     if (hr_list.depth > 0)
         return false;
 
-    if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_LEFT) {
+    if (key == GLFW_KEY_D || key == GLFW_KEY_A) {
         int selected = 0;
-        if (key == GLFW_KEY_RIGHT)
+        if (key == GLFW_KEY_D)
             selected = min(hr_list.selected + 1, hr_list.items_count - 1);
         else
             selected = max(hr_list.selected - 1, 0);
@@ -132,18 +132,18 @@ bool handle_hr_list_key(int key) {
 bool handle_option_list_key(OptionList *list, int key) {
     if (list->depth > 0) {
         switch (key) {
-        case GLFW_KEY_I:
+        case GLFW_KEY_E:
         case GLFW_KEY_ESCAPE:
             option_list_event_handler(OPTION_EVENT_CLOSE_MENU, list, NULL);
             return true;
 
-        case GLFW_KEY_UP: {
+        case GLFW_KEY_W: {
             int direction = -1;
             option_list_event_handler(OPTION_EVENT_MOVE_SELECTION, list, &direction);
             return true;
         }
 
-        case GLFW_KEY_DOWN: {
+        case GLFW_KEY_S: {
             int direction = 1;
             option_list_event_handler(OPTION_EVENT_MOVE_SELECTION, list, &direction);
             return true;
@@ -163,7 +163,7 @@ bool handle_option_list_key(OptionList *list, int key) {
         return true;
     }
 
-    if (key == GLFW_KEY_I) {
+    if (key == GLFW_KEY_E) {
         option_list_event_handler(OPTION_EVENT_OPEN_MENU, list, NULL);
         return true;
     }
@@ -175,16 +175,16 @@ bool handle_vr_list_key(int key) {
     int selected = vr_list.selected;
 
     switch (key) {
-    case GLFW_KEY_BACKSPACE:
+    case GLFW_KEY_Q:
         emit_signal(EVENT_NAVIGATE_BACK, NULL);
         return true;
     case GLFW_KEY_ENTER:
         emit_signal(EVENT_ITEM_ACTIVATED, &vr_list.selected);
         return true;
-    case GLFW_KEY_UP:
+    case GLFW_KEY_W:
         selected = max(selected - 1, 0);
         break;
-    case GLFW_KEY_DOWN:
+    case GLFW_KEY_S:
         selected = min(selected + 1, vr_list.entry_end - 1);
         break;
 
@@ -238,15 +238,15 @@ bool handle_file_entry_key(int key) {
 void handle_input_key(Input *input, EventType eventType, int key) {
     if (key == GLFW_KEY_ESCAPE) {
         hide_input(input);
-    } else if (key == GLFW_KEY_BACKSPACE) {
+    } else if (key == GLFW_KEY_Q) {
         pop_from_input(input);
     } else if (key == GLFW_KEY_ENTER) {
         // search current files
         emit_signal(eventType, input->buffer);
         hide_input(input);
-    } else if (key == GLFW_KEY_LEFT) {
+    } else if (key == GLFW_KEY_A) {
         move_cursor_left(input);
-    } else if (key == GLFW_KEY_RIGHT) {
+    } else if (key == GLFW_KEY_D) {
         move_cursor_right(input);
     }
 }
@@ -285,9 +285,9 @@ bool handle_dialog_entry_key(Dialog *dialog, int key) {
             emit_signal(EVENT_REJECT_DELETE, NULL);
         }
         dialog_hide(dialog);
-    } else if (key == GLFW_KEY_LEFT) {
+    } else if (key == GLFW_KEY_A) {
         dialog_move_cursor_left(dialog);
-    } else if (key == GLFW_KEY_RIGHT) {
+    } else if (key == GLFW_KEY_D) {
         dialog_move_cursor_right(dialog);
     }
     return true;
@@ -346,9 +346,6 @@ void handle_key(GLFWwindow *window, int key, int scancode, int action, int mods)
         return;
     if (handle_vr_list_key(key))
         return;
-
-    if (key == GLFW_KEY_ESCAPE)
-        glfwSetWindowShouldClose(window, true);
 }
 
 void op_list_option_selected(Option *option) {
@@ -538,7 +535,7 @@ int main(int argc, char *argv[]) {
     init_ribbon();
 
     // Register a font
-    if (register_font("sans", "/usr/share/fonts/TTF/SpaceMonoNerdFont-Regular.ttf") < 0) {
+    if (register_font("sans", "/usr/share/fonts/TTF/Segoe-UI-Variable-Static-Display-Bold.ttf") < 0) {
         fprintf(stderr, "Failed to register font\n");
         ui_delete();
         return 1;
