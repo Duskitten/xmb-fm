@@ -533,13 +533,13 @@ int main() {
     init_ribbon();
 
     // Register a font
-    if (register_font("sans", "./fonts/SpaceMonoNerdFont.ttf") < 0) {
+    if (register_font("sans", "/usr/share/fonts/TTF/SpaceMonoNerdFont-Regular.ttf") < 0) {
         fprintf(stderr, "Failed to register font\n");
         ui_delete();
         return 1;
     }
 
-    if (register_font("icon", "./fonts/feather.ttf") < 0) {
+    if (register_font("icon", "/usr/share/fonts/TTF/feather.ttf") < 0) {
         fprintf(stderr, "Failed to register font icon\n");
         ui_delete();
         return 1;

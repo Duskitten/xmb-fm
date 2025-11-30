@@ -14,7 +14,7 @@ SRC_FILES = $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
 
 
-TARGET = app
+TARGET = XMB
 
 all: $(TARGET) $(BUILD_DIR)
 
